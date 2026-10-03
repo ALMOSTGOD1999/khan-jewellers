@@ -1,0 +1,240 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Khan Jewellers design system — deep ink + heritage gold.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-deep: var(--gold-deep);
+  --color-maroon: var(--maroon);
+  --color-ink: var(--ink);
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Jost", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --radius: 0.25rem;
+
+  --ink: oklch(0.17 0.02 40);
+  --maroon: oklch(0.26 0.09 20);
+  --gold: oklch(0.79 0.13 82);
+  --gold-light: oklch(0.92 0.08 92);
+  --gold-deep: oklch(0.62 0.12 72);
+
+  --background: oklch(0.15 0.015 45);
+  --foreground: oklch(0.95 0.012 85);
+  --card: oklch(0.19 0.02 40);
+  --card-foreground: oklch(0.95 0.012 85);
+  --popover: oklch(0.19 0.02 40);
+  --popover-foreground: oklch(0.95 0.012 85);
+  --primary: oklch(0.79 0.13 82);
+  --primary-foreground: oklch(0.15 0.015 45);
+  --secondary: oklch(0.26 0.09 20);
+  --secondary-foreground: oklch(0.95 0.012 85);
+  --muted: oklch(0.24 0.02 45);
+  --muted-foreground: oklch(0.74 0.02 80);
+  --accent: oklch(0.26 0.09 20);
+  --accent-foreground: oklch(0.92 0.08 92);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.35 0.04 65 / 45%);
+  --input: oklch(0.35 0.04 65 / 45%);
+  --ring: oklch(0.79 0.13 82);
+
+  --gradient-gold: linear-gradient(
+    100deg,
+    oklch(0.66 0.11 70) 0%,
+    oklch(0.93 0.09 95) 35%,
+    oklch(0.79 0.14 82) 55%,
+    oklch(0.96 0.06 95) 75%,
+    oklch(0.68 0.12 68) 100%
+  );
+  --gradient-night:
+    radial-gradient(120% 90% at 50% 0%, oklch(0.27 0.08 25) 0%, transparent 60%),
+    linear-gradient(180deg, oklch(0.15 0.015 45), oklch(0.12 0.012 40));
+  --shadow-gold: 0 24px 60px -24px oklch(0.79 0.13 82 / 45%);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background: var(--gradient-night);
+    background-attachment: fixed;
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 300;
+  }
+}
+
+@utility text-gold-gradient {
+  background-image: var(--gradient-gold);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@utility gold-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
+}
+
+@utility card-lux {
+  background: linear-gradient(160deg, oklch(0.22 0.025 45), oklch(0.16 0.018 40));
+  border: 1px solid oklch(0.79 0.13 82 / 22%);
+  box-shadow: var(--shadow-gold);
+}
+
+/* ---------- Welcome animation ---------- */
+
+@keyframes curtain-left {
+  0%,
+  55% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+@keyframes curtain-right {
+  0%,
+  55% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes lady-in {
+  0% {
+    opacity: 0;
+    transform: scale(1.14) translateY(18px);
+    filter: blur(14px);
+  }
+  45% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+@keyframes name-reveal {
+  0% {
+    opacity: 0;
+    letter-spacing: 0.6em;
+    transform: translateY(24px);
+  }
+  100% {
+    opacity: 1;
+    letter-spacing: 0.14em;
+    transform: translateY(0);
+  }
+}
+@keyframes shimmer-sweep {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+@keyframes soft-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes veil-out {
+  0%,
+  80% {
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@utility animate-lady-in {
+  animation: lady-in 2s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+}
+@utility animate-name-reveal {
+  animation: name-reveal 1.6s cubic-bezier(0.16, 1, 0.3, 1) 1.7s both;
+}
+@utility animate-shimmer {
+  background-size: 200% auto;
+  animation: shimmer-sweep 3.5s linear 2.4s infinite;
+}
+@utility animate-soft-rise {
+  animation: soft-rise 1s ease-out both;
+}
+@utility animate-sparkle {
+  animation: sparkle 2.6s ease-in-out infinite;
+}
+@utility animate-curtain-left {
+  animation: curtain-left 3.6s cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+@utility animate-curtain-right {
+  animation: curtain-right 3.6s cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+@utility animate-veil-out {
+  animation: veil-out 4.6s ease-in-out both;
+}
