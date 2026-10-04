@@ -7,10 +7,72 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { type ReactNode } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 
 import appCss from "../styles.css?url";
 import logoImg from "@/assets/logo.png";
+
+const CREDIT_TEXT = "crafted by Incodent";
+
+/**
+ * Footer credit with a typewriter reveal: characters appear one by one when
+ * the credit scrolls into view. SSR renders the full text (hydration-safe);
+ * motion-allowed clients hide it and type it once, at ~65ms/char. Respects
+ * prefers-reduced-motion (text shown immediately, no animation).
+ */
+function CraftedByCredit() {
+  const ref = useRef<HTMLSpanElement>(null);
+  // null = show full text (server render + reduced motion); number = chars shown.
+  const [shown, setShown] = useState<number | null>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    setShown(0);
+    let timer: ReturnType<typeof setInterval> | undefined;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        let i = 0;
+        timer = setInterval(() => {
+          i += 1;
+          setShown(i);
+          if (i >= CREDIT_TEXT.length && timer) clearInterval(timer);
+        }, 65);
+      },
+      { threshold: 0.4 },
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      if (timer) clearInterval(timer);
+    };
+  }, []);
+
+  const visible = shown ?? CREDIT_TEXT.length;
+  const typing = visible < CREDIT_TEXT.length;
+
+  return (
+    <a
+      href="https://www.incodent.com/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-5 inline-block text-[0.6rem] uppercase tracking-[0.3em] text-muted-foreground transition-colors hover:text-primary"
+    >
+      <span ref={ref} className="inline-block">
+        {CREDIT_TEXT.slice(0, visible)}
+        {typing ? (
+          <span aria-hidden="true" className="ml-0.5 animate-pulse text-primary/70">
+            ▌
+          </span>
+        ) : null}
+      </span>
+      <span className="sr-only">crafted by Incodent</span>
+    </a>
+  );
+}
 
 function NotFoundComponent() {
   return (
@@ -186,6 +248,7 @@ function RootComponent() {
         <p className="mt-2 text-xs uppercase tracking-[0.3em] text-muted-foreground">
           Noipukur, Rajarhat &middot; +91 8240570878 &middot; +91 7439491412
         </p>
+        <CraftedByCredit />
       </footer>
     </QueryClientProvider>
   );
